@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         organizationListCall.enqueue(new Callback<StackOverflowQuestions>() {
             @Override
             public void onResponse(Call<StackOverflowQuestions> call, Response<StackOverflowQuestions> response) {
-                System.out.println(response.toString());
+                System.out.println(response.body().items);
             }
 
             @Override
