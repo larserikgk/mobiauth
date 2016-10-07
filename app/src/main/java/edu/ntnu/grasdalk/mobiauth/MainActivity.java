@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import edu.ntnu.grasdalk.mobiauth.models.OrganizationList;
+import java.util.List;
+
+import edu.ntnu.grasdalk.mobiauth.models.Organization;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,19 +48,19 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<OrganizationList> organizationListCall = mobiauthClient.organizations();
-                organizationListCall.enqueue(new Callback<OrganizationList>() {
+                Call<List<Organization>> organizationListCall = mobiauthClient.organizations();
+                organizationListCall.enqueue(new Callback<List<Organization>>() {
                     @Override
-                    public void onResponse(Call<OrganizationList> call, Response<OrganizationList> response) {
+                    public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
                         System.out.println(response.code());
                         System.out.println(response.body());
                         if(response.code() == 200) {
-                            System.out.println(response.body().items);
+                            System.out.println(response.body());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<OrganizationList> call, Throwable t) {
+                    public void onFailure(Call<List<Organization>> call, Throwable t) {
                         t.printStackTrace();
                         Toast.makeText(MainActivity.this, "NETWORK FAIL", Toast.LENGTH_SHORT).show();
                     }
