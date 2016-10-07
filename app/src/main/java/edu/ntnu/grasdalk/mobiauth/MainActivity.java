@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import edu.ntnu.grasdalk.mobiauth.models.StackOverflowQuestions;
+import edu.ntnu.grasdalk.mobiauth.models.OrganizationList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,20 +33,37 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.shared_preferences),
+                Context.MODE_PRIVATE);
+
+        mobiauthClient = ServiceGenerator.createService(
+                MobiauthClient.class,
+                getResources().getString(R.string.server_api_path),
+                sharedPref.getString(getString(R.string.prompt_username), ""),
+                sharedPref.getString(getString(R.string.prompt_password), ""));
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPref = getSharedPreferences(
-                        getString(R.string.shared_preferences),
-                        Context.MODE_PRIVATE);
+                Call<OrganizationList> organizationListCall = mobiauthClient.organizations();
+                organizationListCall.enqueue(new Callback<OrganizationList>() {
+                    @Override
+                    public void onResponse(Call<OrganizationList> call, Response<OrganizationList> response) {
+                        System.out.println(response.code());
+                        System.out.println(response.body());
+                        if(response.code() == 200) {
+                            System.out.println(response.body().items);
+                        }
+                    }
 
-                Snackbar.make(
-                        view,
-                        sharedPref.getString(getString(R.string.prompt_username), "") + ":" +
-                        sharedPref.getString(getString(R.string.prompt_password), ""),
-                        Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+                    @Override
+                    public void onFailure(Call<OrganizationList> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(MainActivity.this, "NETWORK FAIL", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -59,22 +76,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mobiauthClient = ServiceGenerator.createService(
-                MobiauthClient.class,
-                //getResources().getString(R.string.server_api_path));
-                "https://api.stackexchange.com");
-        Call<StackOverflowQuestions> organizationListCall = mobiauthClient.loadQuestions("android");
-        organizationListCall.enqueue(new Callback<StackOverflowQuestions>() {
-            @Override
-            public void onResponse(Call<StackOverflowQuestions> call, Response<StackOverflowQuestions> response) {
-                System.out.println(response.body().items);
-            }
-
-            @Override
-            public void onFailure(Call<StackOverflowQuestions> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "NETWORK FAIL", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
