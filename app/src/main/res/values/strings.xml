@@ -12,7 +12,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="server_ip" translatable="false">95.85.42.92</string>
-    <string name="server_api_path" translatable="false">http://95.85.42.92/api/</string>
+    <string name="server_api_path" translatable="false">http://mobiauth.no/api/</string>
     <string name="shared_preferences">SHARED_PREFERENCES_MOBIAUTH</string>
 </resources>
