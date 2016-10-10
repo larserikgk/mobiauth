@@ -25,7 +25,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    MobiauthClient mobiauthClient;
+    private MobiauthClient mobiauthClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -29,6 +29,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.util.List;
+
+import edu.ntnu.grasdalk.mobiauth.models.Organization;
+import retrofit2.Call;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -44,6 +50,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    private MobiauthClient mobiauthClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,17 +223,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
+            mobiauthClient = ServiceGenerator.createService(
+                    MobiauthClient.class,
+                    getResources().getString(R.string.server_api_path),
+                    mUsername,
+                    mPassword);
+
+            Call<List<Organization>> authenticationCall = mobiauthClient.organizations();
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                final int status = authenticationCall.execute().code();
+                return status == 200;
+            } catch (IOException e) {
+                e.printStackTrace();
                 return false;
             }
-
-            // TODO: authenticate the user
-            return true;
         }
 
         @Override
@@ -245,7 +257,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.error_login_failed));
                 mPasswordView.requestFocus();
             }
         }
