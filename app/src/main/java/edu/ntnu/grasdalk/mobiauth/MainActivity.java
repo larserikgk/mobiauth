@@ -1,6 +1,7 @@
 package edu.ntnu.grasdalk.mobiauth;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,12 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.List;
-
-import edu.ntnu.grasdalk.mobiauth.models.Organization;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,23 +45,6 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<List<Organization>> organizationListCall = mobiauthClient.organizations();
-                organizationListCall.enqueue(new Callback<List<Organization>>() {
-                    @Override
-                    public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
-                        System.out.println(response.code());
-                        System.out.println(response.body());
-                        if(response.code() == 200) {
-                            System.out.println(response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Organization>> call, Throwable t) {
-                        t.printStackTrace();
-                        Toast.makeText(MainActivity.this, "NETWORK FAIL", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
 
@@ -111,17 +91,33 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_authenticate) {
+            IntentIntegrator integrator = new IntentIntegrator(this);
+            integrator.setOrientationLocked(true);
+            integrator.initiateScan();
+        } else if (id == R.id.nav_organizations) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_applications) {
 
         } else if (id == R.id.nav_manage) {
 
