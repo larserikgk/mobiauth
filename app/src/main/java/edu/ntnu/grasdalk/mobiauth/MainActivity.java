@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,15 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.io.IOException;
+import java.util.List;
+
+import edu.ntnu.grasdalk.mobiauth.models.Application;
+import edu.ntnu.grasdalk.mobiauth.models.Organization;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -116,9 +126,41 @@ public class MainActivity extends AppCompatActivity
             integrator.setOrientationLocked(true);
             integrator.initiateScan();
         } else if (id == R.id.nav_organizations) {
+            Call<List<Organization>> call = mobiauthClient.organizations();
+            call.enqueue(new Callback<List<Organization>>() {
+                @Override
+                public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
+                    if (response.isSuccessful()) {
+                        System.out.println(response.body());
+                    } else {
+                        // error response, no access to resource?
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<List<Organization>> call, Throwable t) {
+                    // something went completely south (like no internet connection)
+                    Log.d("Error", t.getMessage());
+                }
+            });
         } else if (id == R.id.nav_applications) {
+            Call<List<Application>> call = mobiauthClient.applications();
+            call.enqueue(new Callback<List<Application>>() {
+                @Override
+                public void onResponse(Call<List<Application>> call, Response<List<Application>> response) {
+                    if (response.isSuccessful()) {
+                        System.out.println(response.body());
+                    } else {
+                        // error response, no access to resource?
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<List<Application>> call, Throwable t) {
+                    // something went completely south (like no internet connection)
+                    Log.d("Error", t.getMessage());
+                }
+            });
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
