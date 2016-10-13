@@ -3,7 +3,10 @@ package edu.ntnu.grasdalk.mobiauth;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -33,6 +38,15 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MobiauthClient mobiauthClient;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_QR_CODE_SCAN = 2;
+
+    private ImageView mNavbarImageView;
+
+    private TextView mNavbarFullnameTextView;
+    private TextView mNavbarEmailTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +81,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mNavbarImageView = (ImageView)findViewById(R.id.imageView);
+        mNavbarFullnameTextView = (TextView)findViewById(R.id.navbar_fullname_textview);
+        mNavbarEmailTextView = (TextView)findViewById(R.id.navbar_email_textview);
     }
 
     @Override
@@ -103,6 +120,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mNavbarImageView.setImageBitmap(imageBitmap);
+        }
+
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
             if(result.getContents() == null) {
@@ -115,6 +138,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    private void dispatchScanQrCodeIntent() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setOrientationLocked(true);
+        integrator.initiateScan();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -122,9 +158,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_authenticate) {
-            IntentIntegrator integrator = new IntentIntegrator(this);
-            integrator.setOrientationLocked(true);
-            integrator.initiateScan();
+            //dispatchTakePictureIntent();
+            //dispatchScanQrCodeIntent();
         } else if (id == R.id.nav_organizations) {
             Call<List<Organization>> call = mobiauthClient.organizations();
             call.enqueue(new Callback<List<Organization>>() {
@@ -172,5 +207,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private boolean checkCameraHardware(Context context) {
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
 }
