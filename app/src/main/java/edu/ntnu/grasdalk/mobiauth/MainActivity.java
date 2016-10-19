@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.IOException;
 import java.util.List;
 
 import edu.ntnu.grasdalk.mobiauth.models.Application;
@@ -80,10 +79,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
 
-        mNavbarImageView = (ImageView)findViewById(R.id.imageView);
-        mNavbarFullnameTextView = (TextView)findViewById(R.id.navbar_fullname_textview);
-        mNavbarEmailTextView = (TextView)findViewById(R.id.navbar_email_textview);
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity
             //dispatchTakePictureIntent();
             //dispatchScanQrCodeIntent();
         } else if (id == R.id.nav_organizations) {
-            Call<List<Organization>> call = mobiauthClient.organizations();
+            Call<List<Organization>> call = mobiauthClient.getOrganizations();
             call.enqueue(new Callback<List<Organization>>() {
                 @Override
                 public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         } else if (id == R.id.nav_applications) {
-            Call<List<Application>> call = mobiauthClient.applications();
+            Call<List<Application>> call = mobiauthClient.getApplications();
             call.enqueue(new Callback<List<Application>>() {
                 @Override
                 public void onResponse(Call<List<Application>> call, Response<List<Application>> response) {

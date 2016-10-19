@@ -23,10 +23,6 @@ public class ServiceGenerator {
             new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create());
 
-    public static <S> S createService(Class<S> serviceClass, String apiPath) {
-        return createService(serviceClass, apiPath, null, null);
-    }
-
     public static <S> S createService(
             Class<S> serviceClass,
             String apiPath,

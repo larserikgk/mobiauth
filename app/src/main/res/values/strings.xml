@@ -8,6 +8,7 @@
     <string name="error_login_failed">Login failed</string>
     <string name="error_field_required">This field is required</string>
 
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_item_authenticate">Authenticate</string>
@@ -19,4 +20,9 @@
     <string name="action_settings">Settings</string>
     <string name="server_api_path" translatable="false">https://mobiauth.no/api/</string>
     <string name="shared_preferences">SHARED_PREFERENCES_MOBIAUTH</string>
+    <string name="prefs_username">PREFS.USERNAME</string>
+    <string name="prefs_password">PREFS.PASSWORD</string>
+    <string name="prefs_first_name">PREFS.FIRST_NAME</string>
+    <string name="prefs_last_name">PREFS.LAST_NAME</string>
+    <string name="prefs_email">PREFS.EMAIL</string>
 </resources>

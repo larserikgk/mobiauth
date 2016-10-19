@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,8 +33,12 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.List;
 
+import edu.ntnu.grasdalk.mobiauth.models.Application;
 import edu.ntnu.grasdalk.mobiauth.models.Organization;
+import edu.ntnu.grasdalk.mobiauth.models.User;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A login screen that offers login via email/password.
@@ -223,17 +228,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
             mobiauthClient = ServiceGenerator.createService(
                     MobiauthClient.class,
                     getResources().getString(R.string.server_api_path),
                     mUsername,
                     mPassword);
 
-            Call<List<Organization>> authenticationCall = mobiauthClient.organizations();
+            Call<User> authenticationCall = mobiauthClient.getUser(mUsername);
+            System.out.println("REQUEST:");
+            System.out.println("Expected: "+mobiauthClient.getUser(mUsername).request().url().toString());
+            System.out.println("Actual: "+authenticationCall.request().url().toString());
             try {
-                final int status = authenticationCall.execute().code();
-                return status == 200;
+                final Response authenticationResponse = authenticationCall.execute();
+                System.out.println("RESPONSE:");
+                System.out.println(authenticationResponse.code());
+                System.out.println(authenticationResponse.message());
+
+                if(authenticationResponse.code() == 200) {
+                    System.out.println(authenticationResponse.raw());
+                    SharedPreferences sharedPref = getSharedPreferences(
+                            getString(R.string.shared_preferences),
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    User user = (User) authenticationResponse.body();
+                    System.out.println(user);
+                    editor.putString(getString(R.string.prefs_first_name), user.toString());
+                    editor.commit();
+                    return true;
+                }
+                return false;
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
@@ -246,14 +269,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+                System.out.println("POST EXECUTE SUCCESS");
                 SharedPreferences sharedPref = getSharedPreferences(
                         getString(R.string.shared_preferences),
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.prompt_username), mUsername);
+                System.out.println(mUsername);
                 editor.putString(getString(R.string.prompt_password), mPassword);
+                System.out.println(mPassword);
                 editor.commit();
-
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             } else {
