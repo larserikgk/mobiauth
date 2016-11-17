@@ -8,7 +8,7 @@
             android:title="@string/navigation_drawer_item_authenticate" />
         <item
             android:id="@+id/nav_organizations"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_organization"
             android:title="@string/navigation_drawer_item_organizations" />
         <item
             android:id="@+id/nav_applications"
@@ -24,7 +24,7 @@
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_menu_help"
                 android:title="@string/navigation_drawer_item_help" />
             <item
                 android:id="@+id/nav_send"
