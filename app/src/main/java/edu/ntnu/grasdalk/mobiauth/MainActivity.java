@@ -30,6 +30,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
+import edu.ntnu.grasdalk.mobiauth.adapters.ApplicationAdapter;
 import edu.ntnu.grasdalk.mobiauth.adapters.OrganizationAdapter;
 import edu.ntnu.grasdalk.mobiauth.models.Application;
 import edu.ntnu.grasdalk.mobiauth.models.Organization;
@@ -233,7 +234,8 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onResponse(Call<List<Application>> call, Response<List<Application>> response) {
                     if (response.isSuccessful()) {
-                        System.out.println(response.body());
+                        mAdapter = new ApplicationAdapter(response.body());
+                        mRecyclerView.setAdapter(mAdapter);
                     } else {
                         // error response, no access to resource?
                     }
