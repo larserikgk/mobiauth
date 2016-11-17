@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity
                                 (TextView)findViewById(R.id.navbar_fullname_textview);
                         mNavbarEmailTextView =
                                 (TextView) findViewById(R.id.navbar_email_textview);
+                        mNavbarImageView = (ImageView) findViewById(R.id.navbar_image);
                         mNavbarFullnameTextView.setText(
                                 sharedPref.getString(getString(R.string.prefs_first_name), ""));
                         mNavbarEmailTextView.setText(
@@ -181,6 +183,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_authenticate) {
+            if(!checkCameraHardware(getApplicationContext())) {
+                Toast.makeText(
+                        getApplicationContext(),
+                        getString(R.string.error_no_camera),
+                        Toast.LENGTH_LONG).show();
+                return true;
+            }
             //dispatchTakePictureIntent();
             //dispatchScanQrCodeIntent();
         } else if (id == R.id.nav_organizations) {
@@ -222,6 +231,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
+            Intent browserIntent =
+                    new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.server_help_url)));
+            startActivity(browserIntent);
 
         } else if (id == R.id.nav_send) {
 
