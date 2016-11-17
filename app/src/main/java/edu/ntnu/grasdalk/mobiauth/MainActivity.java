@@ -73,12 +73,34 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this,
+                drawer,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close){
+
+                    public void onDrawerOpened(View drawerView) {
+                        super.onDrawerOpened(drawerView);
+                        final SharedPreferences sharedPref = getSharedPreferences(
+                                getString(R.string.shared_preferences),
+                                Context.MODE_PRIVATE);
+                        mNavbarFullnameTextView =
+                                (TextView)findViewById(R.id.navbar_fullname_textview);
+                        mNavbarEmailTextView =
+                                (TextView) findViewById(R.id.navbar_email_textview);
+                        mNavbarFullnameTextView.setText(
+                                sharedPref.getString(getString(R.string.prefs_first_name), ""));
+                        mNavbarEmailTextView.setText(
+                                sharedPref.getString(getString(R.string.prefs_email), ""));
+                    }
+                };
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -109,7 +131,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -155,6 +176,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+
         int id = item.getItemId();
 
         if (id == R.id.nav_authenticate) {
