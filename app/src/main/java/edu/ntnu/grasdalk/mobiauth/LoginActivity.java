@@ -235,24 +235,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     mPassword);
 
             Call<User> authenticationCall = mobiauthClient.getUser(mUsername);
-            System.out.println("REQUEST:");
-            System.out.println("Expected: "+mobiauthClient.getUser(mUsername).request().url().toString());
-            System.out.println("Actual: "+authenticationCall.request().url().toString());
             try {
                 final Response authenticationResponse = authenticationCall.execute();
-                System.out.println("RESPONSE:");
-                System.out.println(authenticationResponse.code());
-                System.out.println(authenticationResponse.message());
-
                 if(authenticationResponse.code() == 200) {
-                    System.out.println("Raw response: " + authenticationResponse.raw());
-                    System.out.println("Response body: " + authenticationResponse.body().toString());
                     SharedPreferences sharedPref = getSharedPreferences(
                             getString(R.string.shared_preferences),
                             Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     User user = (User) authenticationResponse.body();
-                    System.out.println(user);
                     editor.putString(getString(R.string.prefs_first_name), user.toString());
                     editor.commit();
                     return true;
@@ -270,15 +260,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                System.out.println("POST EXECUTE SUCCESS");
                 SharedPreferences sharedPref = getSharedPreferences(
                         getString(R.string.shared_preferences),
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.prompt_username), mUsername);
-                System.out.println(mUsername);
                 editor.putString(getString(R.string.prompt_password), mPassword);
-                System.out.println(mPassword);
                 editor.commit();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);

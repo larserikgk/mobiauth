@@ -218,14 +218,16 @@ public class MainActivity extends AppCompatActivity
                         mAdapter = new OrganizationAdapter(response.body());
                         mRecyclerView.setAdapter(mAdapter);
                     } else {
-                        // error response, no access to resource?
+                        Log.d("Error", response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<Organization>> call, Throwable t) {
-                    // something went completely south (like no internet connection)
                     Log.d("Error", t.getMessage());
+                    Toast
+                            .makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG)
+                            .show();
                 }
             });
         } else if (id == R.id.nav_applications) {
@@ -237,14 +239,16 @@ public class MainActivity extends AppCompatActivity
                         mAdapter = new ApplicationAdapter(response.body());
                         mRecyclerView.setAdapter(mAdapter);
                     } else {
-                        // error response, no access to resource?
+                        Log.d("Error", response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<Application>> call, Throwable t) {
-                    // something went completely south (like no internet connection)
                     Log.d("Error", t.getMessage());
+                    Toast
+                            .makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG)
+                            .show();
                 }
             });
         } else if (id == R.id.nav_manage) {
