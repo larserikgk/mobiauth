@@ -14,9 +14,9 @@ public interface MobiauthClient {
     @GET("users/{username}/?format=json")
     Call<User> getUser(@Path("username") String username);
 
-    @GET("getOrganizations/?format=json")
+    @GET("organizations/?format=json")
     Call<List<Organization>> getOrganizations();
 
-    @GET("getApplications/?format=json")
+    @GET("applications/?format=json")
     Call<List<Application>> getApplications();
 }

@@ -245,7 +245,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 System.out.println(authenticationResponse.message());
 
                 if(authenticationResponse.code() == 200) {
-                    System.out.println(authenticationResponse.raw());
+                    System.out.println("Raw response: " + authenticationResponse.raw());
+                    System.out.println("Response body: " + authenticationResponse.body().toString());
                     SharedPreferences sharedPref = getSharedPreferences(
                             getString(R.string.shared_preferences),
                             Context.MODE_PRIVATE);
