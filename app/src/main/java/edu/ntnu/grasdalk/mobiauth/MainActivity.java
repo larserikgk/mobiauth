@@ -14,6 +14,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +30,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
+import edu.ntnu.grasdalk.mobiauth.adapters.OrganizationAdapter;
 import edu.ntnu.grasdalk.mobiauth.models.Application;
 import edu.ntnu.grasdalk.mobiauth.models.Organization;
 import retrofit2.Call;
@@ -46,6 +49,11 @@ public class MainActivity extends AppCompatActivity
 
     private TextView mNavbarFullnameTextView;
     private TextView mNavbarEmailTextView;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
 
     @Override
@@ -102,7 +110,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     @Override
@@ -198,7 +214,8 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
                     if (response.isSuccessful()) {
-                        System.out.println(response.body());
+                        mAdapter = new OrganizationAdapter(response.body());
+                        mRecyclerView.setAdapter(mAdapter);
                     } else {
                         // error response, no access to resource?
                     }
