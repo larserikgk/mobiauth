@@ -1,5 +1,6 @@
 package edu.ntnu.grasdalk.mobiauth;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,8 +9,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_QR_CODE_SCAN = 2;
+    final static int PERMISSIONS_CAMERA = 3;
 
     private ImageView mNavbarImageView;
 
@@ -191,24 +196,34 @@ public class MainActivity extends AppCompatActivity
         integrator.initiateScan();
     }
 
+    private void authenticateUser() {
+        if(!checkCameraHardware(getApplicationContext())) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    getString(R.string.error_no_camera),
+                    Toast.LENGTH_LONG).show();
+        }
+
+        if (checkSelfPermission(Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                    PERMISSIONS_CAMERA);
+        } else {
+            dispatchTakePictureIntent();
+        }
+        //dispatchScanQrCodeIntent();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-
 
         int id = item.getItemId();
 
         if (id == R.id.nav_authenticate) {
-            if(!checkCameraHardware(getApplicationContext())) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        getString(R.string.error_no_camera),
-                        Toast.LENGTH_LONG).show();
-                return true;
-            }
-            //dispatchTakePictureIntent();
-            //dispatchScanQrCodeIntent();
+           authenticateUser();
         } else if (id == R.id.nav_organizations) {
             Call<List<Organization>> call = mobiauthClient.getOrganizations();
             call.enqueue(new Callback<List<Organization>>() {
@@ -269,5 +284,30 @@ public class MainActivity extends AppCompatActivity
 
     private boolean checkCameraHardware(Context context) {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String permissions[],
+            @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case PERMISSIONS_CAMERA: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    authenticateUser();
+                } else {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            getString(R.string.error_no_camera),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }
