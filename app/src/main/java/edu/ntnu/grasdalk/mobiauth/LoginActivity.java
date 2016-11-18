@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mSupportTextView;
 
     private MobiauthClient mobiauthClient;
 
@@ -87,6 +89,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mSupportTextView = (TextView) findViewById(R.id.login_support_textview);
+        mSupportTextView.setText(getString(R.string.login_support_text));
+        mSupportTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent =
+                        new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.server_help_url)));
+                startActivity(browserIntent);
+            }
+        });
     }
 
     /**

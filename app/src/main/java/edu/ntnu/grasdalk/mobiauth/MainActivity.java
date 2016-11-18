@@ -266,14 +266,12 @@ public class MainActivity extends AppCompatActivity
                             .show();
                 }
             });
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_support) {
             Intent browserIntent =
                     new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.server_help_url)));
             startActivity(browserIntent);
-
-        } else if (id == R.id.nav_send) {
 
         }
 

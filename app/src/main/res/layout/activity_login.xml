@@ -38,7 +38,7 @@
                 android:text="Mobiauth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView" />
+                android:id="@+id/login_appname_textview" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -81,7 +81,16 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
+            <TextView
+                android:elegantTextHeight="true"
+                android:textSize="15sp"
+                android:linksClickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_support_textview" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </LinearLayout>
