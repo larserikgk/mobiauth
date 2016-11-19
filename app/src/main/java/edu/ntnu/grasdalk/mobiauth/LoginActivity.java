@@ -256,7 +256,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     SharedPreferences.Editor editor = sharedPref.edit();
                     User user = (User) authenticationResponse.body();
                     editor.putString(getString(R.string.prefs_first_name), user.toString());
-                    editor.commit();
+                    editor.putString(getString(R.string.prefs_email), user.email);
+                    editor.putString(getString(R.string.prompt_username), mUsername);
+                    editor.putString(getString(R.string.prompt_password), mPassword);
+                    editor.apply();
                     return true;
                 }
                 return false;
@@ -272,13 +275,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                SharedPreferences sharedPref = getSharedPreferences(
-                        getString(R.string.shared_preferences),
-                        Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(getString(R.string.prompt_username), mUsername);
-                editor.putString(getString(R.string.prompt_password), mPassword);
-                editor.commit();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             } else {

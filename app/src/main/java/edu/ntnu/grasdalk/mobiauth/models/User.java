@@ -6,7 +6,7 @@ public class User {
     String username;
     String first_name;
     String last_name;
-    String email;
+    public String email;
 
     @Override
     public String toString() {

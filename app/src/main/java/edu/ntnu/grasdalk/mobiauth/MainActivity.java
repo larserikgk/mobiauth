@@ -177,6 +177,8 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                Log.d(result.getContents(), "");
+                dispatchTakePictureIntent();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -210,9 +212,9 @@ public class MainActivity extends AppCompatActivity
             requestPermissions(new String[]{Manifest.permission.CAMERA},
                     PERMISSIONS_CAMERA);
         } else {
-            dispatchTakePictureIntent();
+            //dispatchTakePictureIntent();
+            dispatchScanQrCodeIntent();
         }
-        //dispatchScanQrCodeIntent();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
