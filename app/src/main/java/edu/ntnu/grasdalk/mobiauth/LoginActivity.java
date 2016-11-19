@@ -202,7 +202,8 @@ public class LoginActivity extends AppCompatActivity {
                             Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     User user = (User) authenticationResponse.body();
-                    editor.putString(getString(R.string.prefs_first_name), user.toString());
+                    editor.putString(getString(R.string.prefs_first_name), user.first_name);
+                    editor.putString(getString(R.string.prefs_last_name), user.last_name);
                     editor.putString(getString(R.string.prefs_email), user.email);
                     editor.putString(getString(R.string.prompt_username), mUsername);
                     editor.putString(getString(R.string.prompt_password), mPassword);

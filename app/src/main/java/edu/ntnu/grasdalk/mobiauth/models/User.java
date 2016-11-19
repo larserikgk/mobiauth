@@ -4,8 +4,8 @@ package edu.ntnu.grasdalk.mobiauth.models;
 public class User {
     int id;
     String username;
-    String first_name;
-    String last_name;
+    public String first_name;
+    public String last_name;
     public String email;
 
     @Override
