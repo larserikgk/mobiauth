@@ -18,30 +18,25 @@ public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapte
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView mTextView;
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
+
+        public TextView organizationName;
+        public ViewHolder(View view) {
+            super(view);
+            organizationName = (TextView) view.findViewById(R.id.organizationlist_organization_name);
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public OrganizationAdapter(List<Organization> dataset) {
         mDataset = dataset;
     }
 
-    // Create new views (invoked by the layout manager)
+
     @Override
-    public OrganizationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
-        // create a new view
+    public OrganizationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.organization_list_entry, parent, false);
-        // set the view's size, margins, paddings and layout parameters
 
-        ViewHolder vh = new ViewHolder((TextView)v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -49,7 +44,7 @@ public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset.get(position).toString());
+        holder.organizationName.setText(mDataset.get(position).getName());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

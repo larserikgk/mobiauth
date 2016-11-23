@@ -1,10 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="10dip"
-    >
+    android:padding="10dip">
 
-    <TextView android:id="@+id/application_name"
+    <TextView android:id="@+id/applicationlist_application_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -13,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/labels_organization_name"/>
 
-    <TextView android:id="@+id/organization_name"
+    <TextView android:id="@+id/applicationlist_organization_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -25,4 +24,5 @@
     <TextView android:id="@+id/application_testdata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 </LinearLayout>

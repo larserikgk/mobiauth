@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
 
     private TextView mNavbarFullnameTextView;
     private TextView mNavbarEmailTextView;
+    private TextView mRecyclerViewLabel;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerViewLabel = (TextView) findViewById(R.id.recycler_view_label);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -242,6 +244,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_authenticate) {
            authenticateUser();
         } else if (id == R.id.nav_organizations) {
+            mRecyclerViewLabel.setText("Organizations you have access to:");
             Call<List<Organization>> call = mobiauthClient.getOrganizations();
             call.enqueue(new Callback<List<Organization>>() {
                 @Override
@@ -263,6 +266,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         } else if (id == R.id.nav_applications) {
+            mRecyclerViewLabel.setText("Applications you have access to:");
             Call<List<Application>> call = mobiauthClient.getApplications();
             call.enqueue(new Callback<List<Application>>() {
                 @Override

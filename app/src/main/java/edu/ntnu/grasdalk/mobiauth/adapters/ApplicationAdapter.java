@@ -25,8 +25,8 @@ public class ApplicationAdapter
 
         public ApplicationViewHolder(View view) {
             super(view);
-            applicationName = (TextView) view.findViewById(R.id.application_name);
-            organizationName = (TextView) view.findViewById(R.id.organization_name);
+            applicationName = (TextView) view.findViewById(R.id.applicationlist_application_name);
+            organizationName = (TextView) view.findViewById(R.id.applicationlist_organization_name);
             applicationTestdata = (TextView) view.findViewById(R.id.application_testdata);
         }
     }
