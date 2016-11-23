@@ -2,6 +2,7 @@ package edu.ntnu.grasdalk.mobiauth;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.Date;
 import java.util.List;
 
 import edu.ntnu.grasdalk.mobiauth.adapters.ApplicationAdapter;
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
 
 
     @Override
@@ -129,7 +131,17 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            new AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to log out?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            logOut();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+            //super.onBackPressed();
         }
     }
 
@@ -148,18 +160,22 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            final SharedPreferences sharedPref = getSharedPreferences(
-                    getString(R.string.shared_preferences),
-                    Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.clear().commit();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.putExtra("source", MainActivity.class.toString());
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            logOut();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logOut() {
+        final SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.shared_preferences),
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear().commit();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.putExtra("source", MainActivity.class.toString());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -268,7 +284,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         } else if (id == R.id.nav_settings) {
-
+            Toast.makeText(this, "Settings are not yet available", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_support) {
             Intent browserIntent =
                     new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.server_help_url)));
