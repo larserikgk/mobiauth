@@ -18,6 +18,13 @@
         android:layout_height="wrap_content"
         android:text="" />
 
+    <fragment android:name="edu.ntnu.grasdalk.mobiauth.fragments.AuthenticationFragment"
+        android:id="@+id/authentication_fragment"
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"

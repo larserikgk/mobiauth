@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import edu.ntnu.grasdalk.mobiauth.adapters.ApplicationAdapter;
 import edu.ntnu.grasdalk.mobiauth.adapters.OrganizationAdapter;
+import edu.ntnu.grasdalk.mobiauth.fragments.AuthenticationFragment;
 import edu.ntnu.grasdalk.mobiauth.models.Application;
 import edu.ntnu.grasdalk.mobiauth.models.Organization;
 import retrofit2.Call;
@@ -41,7 +43,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        AuthenticationFragment.OnFragmentInteractionListener {
 
     private MobiauthClient mobiauthClient;
 
@@ -123,6 +126,20 @@ public class MainActivity extends AppCompatActivity
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        AuthenticationFragment newFragment = new AuthenticationFragment();
+        Bundle args = new Bundle();
+        newFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.authentication_fragment, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     @Override
@@ -138,6 +155,10 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     @Override
