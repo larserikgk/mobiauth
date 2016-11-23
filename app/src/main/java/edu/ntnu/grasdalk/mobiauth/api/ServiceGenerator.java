@@ -1,4 +1,4 @@
-package edu.ntnu.grasdalk.mobiauth;
+package edu.ntnu.grasdalk.mobiauth.api;
 
 import android.util.Base64;
 

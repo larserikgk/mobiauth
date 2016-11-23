@@ -29,4 +29,7 @@
     <string name="prefs_first_name">PREFS.FIRST_NAME</string>
     <string name="prefs_last_name">PREFS.LAST_NAME</string>
     <string name="prefs_email">PREFS.EMAIL</string>
+
+    <string name="labels_organization_name">Organization id:</string>
+    <string name="labels_testdata">Biometric authentication:</string>
 </resources>

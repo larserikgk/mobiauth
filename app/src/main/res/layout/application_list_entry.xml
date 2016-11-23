@@ -1,5 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView android:id="@+id/application_list_name"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:padding="10dip"
+    >
+
+    <TextView android:id="@+id/application_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView android:id="@+id/organization_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labels_organization_name"/>
+
+    <TextView android:id="@+id/organization_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView android:id="@+id/application_testdata_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labels_testdata"/>
+
+    <TextView android:id="@+id/application_testdata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,11 +31,12 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.util.Date;
 import java.util.List;
 
 import edu.ntnu.grasdalk.mobiauth.adapters.ApplicationAdapter;
 import edu.ntnu.grasdalk.mobiauth.adapters.OrganizationAdapter;
+import edu.ntnu.grasdalk.mobiauth.api.MobiauthClient;
+import edu.ntnu.grasdalk.mobiauth.api.ServiceGenerator;
 import edu.ntnu.grasdalk.mobiauth.models.Application;
 import edu.ntnu.grasdalk.mobiauth.models.Organization;
 import retrofit2.Call;
