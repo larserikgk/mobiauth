@@ -27,6 +27,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -91,6 +92,13 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(browserIntent);
             }
         });
+        Intent intent = getIntent();
+        if(intent.getExtras() != null
+                && intent.getStringExtra("source") != null
+                && intent.getStringExtra("source").equals(MainActivity.class.toString())){
+            Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     /**

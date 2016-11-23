@@ -77,13 +77,6 @@ public class MainActivity extends AppCompatActivity
                 sharedPref.getString(getString(R.string.prompt_username), ""),
                 sharedPref.getString(getString(R.string.prompt_password), ""));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this,
@@ -154,8 +147,16 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            final SharedPreferences sharedPref = getSharedPreferences(
+                    getString(R.string.shared_preferences),
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.clear().commit();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.putExtra("source", MainActivity.class.toString());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
