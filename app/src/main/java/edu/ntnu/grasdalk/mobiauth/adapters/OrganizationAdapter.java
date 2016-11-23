@@ -11,16 +11,15 @@ import java.util.List;
 import edu.ntnu.grasdalk.mobiauth.R;
 import edu.ntnu.grasdalk.mobiauth.models.Organization;
 
-public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapter.ViewHolder> {
+public class OrganizationAdapter
+        extends RecyclerView.Adapter<OrganizationAdapter.OrganizationViewHolder> {
     private List<Organization> mDataset;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+    public static class OrganizationViewHolder extends RecyclerView.ViewHolder {
 
         public TextView organizationName;
-        public ViewHolder(View view) {
+        public OrganizationViewHolder(View view) {
             super(view);
             organizationName = (TextView) view.findViewById(R.id.organizationlist_organization_name);
         }
@@ -30,24 +29,19 @@ public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapte
         mDataset = dataset;
     }
 
-
     @Override
-    public OrganizationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OrganizationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.organization_list_entry, parent, false);
 
-        return new ViewHolder(v);
+        return new OrganizationViewHolder(v);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+    public void onBindViewHolder(OrganizationViewHolder holder, int position) {
         holder.organizationName.setText(mDataset.get(position).getName());
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();
