@@ -15,17 +15,17 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import edu.ntnu.grasdalk.mobiauth.MainActivity;
 import edu.ntnu.grasdalk.mobiauth.R;
-import edu.ntnu.grasdalk.mobiauth.adapters.OrganizationAdapter;
+import edu.ntnu.grasdalk.mobiauth.adapters.ApplicationAdapter;
 import edu.ntnu.grasdalk.mobiauth.api.MobiauthClient;
 import edu.ntnu.grasdalk.mobiauth.api.ServiceGenerator;
-import edu.ntnu.grasdalk.mobiauth.models.Organization;
+import edu.ntnu.grasdalk.mobiauth.models.Application;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrganizationFragment extends Fragment {
+
+public class ApplicationFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -34,10 +34,9 @@ public class OrganizationFragment extends Fragment {
     private MobiauthClient mobiauthClient;
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater,
-            ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
 
         final SharedPreferences sharedPref = getActivity().getSharedPreferences(
                 getString(R.string.shared_preferences),
@@ -49,7 +48,8 @@ public class OrganizationFragment extends Fragment {
                 sharedPref.getString(getString(R.string.prompt_username), ""),
                 sharedPref.getString(getString(R.string.prompt_password), ""));
 
-        return inflater.inflate(R.layout.fragment_organization, container, false);
+
+        return inflater.inflate(R.layout.fragment_application, container, false);
     }
 
     @Override
@@ -66,14 +66,14 @@ public class OrganizationFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerViewLabel.setText("Organizations you have access to:");
+        mRecyclerViewLabel.setText("Applications you have access to:");
 
-        Call<List<Organization>> call = mobiauthClient.getOrganizations();
-        call.enqueue(new Callback<List<Organization>>() {
+        Call<List<Application>> call = mobiauthClient.getApplications();
+        call.enqueue(new Callback<List<Application>>() {
             @Override
-            public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
+            public void onResponse(Call<List<Application>> call, Response<List<Application>> response) {
                 if (response.isSuccessful()) {
-                    mAdapter = new OrganizationAdapter(response.body());
+                    mAdapter = new ApplicationAdapter(response.body());
                     mRecyclerView.setAdapter(mAdapter);
                 } else {
                     Log.d("Error", response.message());
@@ -81,7 +81,7 @@ public class OrganizationFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Organization>> call, Throwable t) {
+            public void onFailure(Call<List<Application>> call, Throwable t) {
                 Log.d("Error", t.getMessage());
                 Toast
                         .makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG)

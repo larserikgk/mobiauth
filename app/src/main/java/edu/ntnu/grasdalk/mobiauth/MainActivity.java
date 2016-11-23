@@ -37,6 +37,9 @@ import edu.ntnu.grasdalk.mobiauth.adapters.ApplicationAdapter;
 import edu.ntnu.grasdalk.mobiauth.adapters.OrganizationAdapter;
 import edu.ntnu.grasdalk.mobiauth.api.MobiauthClient;
 import edu.ntnu.grasdalk.mobiauth.api.ServiceGenerator;
+import edu.ntnu.grasdalk.mobiauth.fragments.ApplicationFragment;
+import edu.ntnu.grasdalk.mobiauth.fragments.AuthenticationFragment;
+import edu.ntnu.grasdalk.mobiauth.fragments.OrganizationFragment;
 import edu.ntnu.grasdalk.mobiauth.models.Application;
 import edu.ntnu.grasdalk.mobiauth.models.Organization;
 import retrofit2.Call;
@@ -46,8 +49,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private MobiauthClient mobiauthClient;
-
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_QR_CODE_SCAN = 2;
     final static int PERMISSIONS_CAMERA = 3;
@@ -56,12 +57,10 @@ public class MainActivity extends AppCompatActivity
 
     private TextView mNavbarFullnameTextView;
     private TextView mNavbarEmailTextView;
-    private TextView mRecyclerViewLabel;
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
+    private OrganizationFragment organizationFragment;
+    private AuthenticationFragment authenticationFragment;
+    private ApplicationFragment applicationFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +68,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        final SharedPreferences sharedPref = getSharedPreferences(
-                getString(R.string.shared_preferences),
-                Context.MODE_PRIVATE);
-
-        mobiauthClient = ServiceGenerator.createService(
-                MobiauthClient.class,
-                getResources().getString(R.string.server_api_path),
-                sharedPref.getString(getString(R.string.prompt_username), ""),
-                sharedPref.getString(getString(R.string.prompt_password), ""));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -110,16 +99,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mRecyclerViewLabel = (TextView) findViewById(R.id.recycler_view_label);
+        organizationFragment = new OrganizationFragment();
+        authenticationFragment = new AuthenticationFragment();
+        applicationFragment = new ApplicationFragment();
+        getFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, authenticationFragment).commit();
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     @Override
@@ -235,58 +220,24 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_authenticate) {
-           authenticateUser();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, authenticationFragment).commit();
+
         } else if (id == R.id.nav_organizations) {
-            mRecyclerViewLabel.setText("Organizations you have access to:");
-            Call<List<Organization>> call = mobiauthClient.getOrganizations();
-            call.enqueue(new Callback<List<Organization>>() {
-                @Override
-                public void onResponse(Call<List<Organization>> call, Response<List<Organization>> response) {
-                    if (response.isSuccessful()) {
-                        mAdapter = new OrganizationAdapter(response.body());
-                        mRecyclerView.setAdapter(mAdapter);
-                    } else {
-                        Log.d("Error", response.message());
-                    }
-                }
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, organizationFragment).commit();
 
-                @Override
-                public void onFailure(Call<List<Organization>> call, Throwable t) {
-                    Log.d("Error", t.getMessage());
-                    Toast
-                            .makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG)
-                            .show();
-                }
-            });
         } else if (id == R.id.nav_applications) {
-            mRecyclerViewLabel.setText("Applications you have access to:");
-            Call<List<Application>> call = mobiauthClient.getApplications();
-            call.enqueue(new Callback<List<Application>>() {
-                @Override
-                public void onResponse(Call<List<Application>> call, Response<List<Application>> response) {
-                    if (response.isSuccessful()) {
-                        mAdapter = new ApplicationAdapter(response.body());
-                        mRecyclerView.setAdapter(mAdapter);
-                    } else {
-                        Log.d("Error", response.message());
-                    }
-                }
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, applicationFragment).commit();
 
-                @Override
-                public void onFailure(Call<List<Application>> call, Throwable t) {
-                    Log.d("Error", t.getMessage());
-                    Toast
-                            .makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG)
-                            .show();
-                }
-            });
         } else if (id == R.id.nav_settings) {
             Toast.makeText(this, "Settings are not yet available", Toast.LENGTH_LONG).show();
+
         } else if (id == R.id.nav_support) {
             Intent browserIntent =
                     new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.server_help_url)));
             startActivity(browserIntent);
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
