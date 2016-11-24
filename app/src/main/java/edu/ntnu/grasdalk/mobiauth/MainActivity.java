@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            if(getFragmentManager().getBackStackEntryCount() == 0) {
             new AlertDialog.Builder(this)
                     .setMessage("Are you sure you want to log out?")
                     .setCancelable(false)
@@ -128,7 +129,9 @@ public class MainActivity extends AppCompatActivity
                     })
                     .setNegativeButton("No", null)
                     .show();
-            //super.onBackPressed();
+            } else {
+            super.onBackPressed();
+            }
         }
     }
 
@@ -215,21 +218,28 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-
         int id = item.getItemId();
 
         if (id == R.id.nav_authenticate) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, authenticationFragment).commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, authenticationFragment)
+                    .addToBackStack("")
+                    .commit();
 
         } else if (id == R.id.nav_organizations) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, organizationFragment).commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, organizationFragment)
+                    .addToBackStack("")
+                    .commit();
 
         } else if (id == R.id.nav_applications) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, applicationFragment).commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, applicationFragment)
+                    .addToBackStack("")
+                    .commit();
 
         } else if (id == R.id.nav_settings) {
             Toast.makeText(this, "Settings are not yet available", Toast.LENGTH_LONG).show();
