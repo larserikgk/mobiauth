@@ -163,37 +163,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mNavbarImageView.setImageBitmap(imageBitmap);
-        }
-
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                Log.d(result.getContents(), "");
-                dispatchTakePictureIntent();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-
-    private void dispatchScanQrCodeIntent() {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setOrientationLocked(true);
-        integrator.initiateScan();
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void authenticateUser() {
@@ -206,12 +176,14 @@ public class MainActivity extends AppCompatActivity
 
         if (checkSelfPermission(Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
-
             requestPermissions(new String[]{Manifest.permission.CAMERA},
                     PERMISSIONS_CAMERA);
         } else {
-            //dispatchTakePictureIntent();
-            dispatchScanQrCodeIntent();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, authenticationFragment)
+                    .addToBackStack("")
+                    .commit();
         }
     }
 
@@ -221,11 +193,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_authenticate) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, authenticationFragment)
-                    .addToBackStack("")
-                    .commit();
+            authenticateUser();
 
         } else if (id == R.id.nav_organizations) {
             getFragmentManager()

@@ -4,9 +4,58 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Authentication fragment"
+        android:text="@string/labels_authenticate_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+        android:id="@+id/authfragment_description"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:padding="10dip"/>
+
+    <TextView
+        android:text="@string/labels_authenticate_scancode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:gravity="center"
+        android:padding="10dip"/>
+
+    <Button
+        android:text="@string/btn_authfragment_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/authfragment_scan_btn"
+        android:padding="10dip"/>
+
+    <TextView
+        android:text="@string/labels_authenticate_takephoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:gravity="center"
+        android:padding="10dip"/>
+
+    <Button
+        android:text="@string/btn_authfragment_takephoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/authfragment_photo_btn"
+        android:padding="10dip"/>
+
+    <TextView
+        android:text="@string/labels_authenticate_verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/authfragment_verify"
+        android:gravity="center"
+        android:padding="10dip"/>
+
+    <Button
+        android:text="@string/btn_authfragment_verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/authfragment_verify_btn"
+        android:padding="10dip"/>
+
 
 </LinearLayout>
