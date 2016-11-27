@@ -6,10 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,10 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,29 +24,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import java.util.List;
-
-import edu.ntnu.grasdalk.mobiauth.adapters.ApplicationAdapter;
-import edu.ntnu.grasdalk.mobiauth.adapters.OrganizationAdapter;
-import edu.ntnu.grasdalk.mobiauth.api.MobiauthClient;
-import edu.ntnu.grasdalk.mobiauth.api.ServiceGenerator;
 import edu.ntnu.grasdalk.mobiauth.fragments.ApplicationFragment;
 import edu.ntnu.grasdalk.mobiauth.fragments.AuthenticationFragment;
 import edu.ntnu.grasdalk.mobiauth.fragments.OrganizationFragment;
-import edu.ntnu.grasdalk.mobiauth.models.Application;
-import edu.ntnu.grasdalk.mobiauth.models.Organization;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_QR_CODE_SCAN = 2;
     final static int PERMISSIONS_CAMERA = 3;
 
     private ImageView mNavbarImageView;
@@ -65,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
