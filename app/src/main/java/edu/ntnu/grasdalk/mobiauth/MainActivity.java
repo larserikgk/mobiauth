@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import edu.ntnu.grasdalk.mobiauth.fragments.ApplicationFragment;
 import edu.ntnu.grasdalk.mobiauth.fragments.AuthenticationFragment;
+import edu.ntnu.grasdalk.mobiauth.fragments.HomeFragment;
 import edu.ntnu.grasdalk.mobiauth.fragments.OrganizationFragment;
 
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private OrganizationFragment organizationFragment;
     private AuthenticationFragment authenticationFragment;
     private ApplicationFragment applicationFragment;
+    private HomeFragment homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +87,9 @@ public class MainActivity extends AppCompatActivity
         organizationFragment = new OrganizationFragment();
         authenticationFragment = new AuthenticationFragment();
         applicationFragment = new ApplicationFragment();
+        homeFragment = new HomeFragment();
         getFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, authenticationFragment).commit();
+                .add(R.id.fragment_container, homeFragment).commit();
 
     }
 

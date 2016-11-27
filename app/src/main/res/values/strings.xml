@@ -36,6 +36,8 @@
     <string name="labels_authenticate_scancode">1. Scan the QR code provided</string>
     <string name="labels_authenticate_takephoto">2. Take a photo of your face</string>
     <string name="labels_authenticate_verify">3. Verify authentication</string>
+    <string name="labels_home_welcome">Welcome to MobiAuth</string>
+    <string name="labels_home_description">Use the menu to authenticate, view your permissions or visit the support page.</string>
 
     <string name="btn_authfragment_scan">Scan</string>
     <string name="btn_authfragment_takephoto">Take photo</string>
