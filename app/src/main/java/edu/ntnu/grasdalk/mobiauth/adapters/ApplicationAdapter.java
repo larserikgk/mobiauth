@@ -46,7 +46,7 @@ public class ApplicationAdapter
     public void onBindViewHolder(ApplicationViewHolder holder, int position) {
         holder.applicationName.setText(mDataset.get(position).getName());
         holder.organizationName.setText(String.valueOf(mDataset.get(position).getOrganizationId()));
-        holder.applicationTestdata.setText(String.valueOf(mDataset.get(position).isRequirePhotoBiometrics()));
+        holder.applicationTestdata.setText(String.valueOf(mDataset.get(position).requiresPhotoBiometrics()));
     }
 
     @Override

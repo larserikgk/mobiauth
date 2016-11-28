@@ -1,12 +1,17 @@
 package edu.ntnu.grasdalk.mobiauth.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Application {
     int id;
     String name;
     int organization;
-    boolean require_biometrics_photo;
-    boolean require_audio_proctoring;
-    boolean require_video_proctoring;
+    @SerializedName("require_biometrics_photo")
+    boolean requireBiometricsPhoto;
+    @SerializedName("require_audio_proctoring")
+    boolean requireAudioProctoring;
+    @SerializedName("require_video_proctoring")
+    boolean requireVideoProctoring;
 
     public int getId() {
         return id;
@@ -16,28 +21,28 @@ public class Application {
         this.id = id;
     }
 
-    public boolean isRequireVideoProctoring() {
-        return require_video_proctoring;
+    public boolean requiresVideoProctoring() {
+        return requireVideoProctoring;
     }
 
     public void setRequireVideoProctoring(boolean requireVideoProctoring) {
-        this.require_video_proctoring = requireVideoProctoring;
+        this.requireVideoProctoring = requireVideoProctoring;
     }
 
-    public boolean isRequireAudioProctoring() {
-        return require_audio_proctoring;
+    public boolean requiresAudioProctoring() {
+        return requireAudioProctoring;
     }
 
     public void setRequireAudioProctoring(boolean requireAudioProctoring) {
-        this.require_audio_proctoring = requireAudioProctoring;
+        this.requireAudioProctoring = requireAudioProctoring;
     }
 
-    public boolean isRequirePhotoBiometrics() {
-        return require_biometrics_photo;
+    public boolean requiresPhotoBiometrics() {
+        return requireBiometricsPhoto;
     }
 
     public void setRequirePhotoBiometrics(boolean requirePhotoBiometrics) {
-        this.require_biometrics_photo = requirePhotoBiometrics;
+        this.requireBiometricsPhoto = requirePhotoBiometrics;
     }
 
     public int getOrganizationId() {

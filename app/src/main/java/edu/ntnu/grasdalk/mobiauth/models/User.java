@@ -1,15 +1,19 @@
 package edu.ntnu.grasdalk.mobiauth.models;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
     int id;
     String username;
-    public String first_name;
-    public String last_name;
+    @SerializedName("first_name")
+    public String firstName;
+    @SerializedName("last_name")
+    public String lastName;
     public String email;
 
     @Override
     public String toString() {
-        return first_name + " " +last_name;
+        return firstName + " " + lastName;
     }
 }
