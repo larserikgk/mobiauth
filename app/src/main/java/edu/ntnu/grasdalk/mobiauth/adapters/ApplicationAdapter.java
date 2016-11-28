@@ -10,10 +10,12 @@ import java.util.List;
 
 import edu.ntnu.grasdalk.mobiauth.R;
 import edu.ntnu.grasdalk.mobiauth.models.Application;
+import edu.ntnu.grasdalk.mobiauth.models.Organization;
 
 public class ApplicationAdapter
         extends RecyclerView.Adapter<ApplicationAdapter.ApplicationViewHolder> {
     private List<Application> mDataset;
+    private List<Organization> organizationList;
 
 
     public static class ApplicationViewHolder extends RecyclerView.ViewHolder {
@@ -29,8 +31,9 @@ public class ApplicationAdapter
         }
     }
 
-    public ApplicationAdapter(List<Application> dataset) {
+    public ApplicationAdapter(List<Application> dataset, List<Organization> organizationList) {
         mDataset = dataset;
+        this.organizationList = organizationList;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class ApplicationAdapter
     @Override
     public void onBindViewHolder(ApplicationViewHolder holder, int position) {
         holder.applicationName.setText(mDataset.get(position).getName());
-        holder.organizationName.setText(String.valueOf(mDataset.get(position).getOrganizationId()));
+        holder.organizationName.setText(String.valueOf(organizationList.get(position).getName()));
         holder.applicationTestdata.setText(String.valueOf(mDataset.get(position).requiresPhotoBiometrics()));
     }
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 
 import edu.ntnu.grasdalk.mobiauth.R;
@@ -20,6 +21,7 @@ import edu.ntnu.grasdalk.mobiauth.adapters.ApplicationAdapter;
 import edu.ntnu.grasdalk.mobiauth.api.MobiauthClient;
 import edu.ntnu.grasdalk.mobiauth.api.ServiceGenerator;
 import edu.ntnu.grasdalk.mobiauth.models.Application;
+import edu.ntnu.grasdalk.mobiauth.models.Organization;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,7 +75,15 @@ public class ApplicationFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Application>> call, Response<List<Application>> response) {
                 if (response.isSuccessful()) {
-                    mAdapter = new ApplicationAdapter(response.body());
+                    List<Organization> organizations = null;
+                    Call<List<Organization>> organizationCall = mobiauthClient.getOrganizations();
+                    try {
+                        final Response authenticationResponse = organizationCall.execute();
+                        organizations = (List<Organization>) authenticationResponse.body();
+                    } catch (IOException e) {
+                        Log.e("", e.toString());
+                    }
+                    mAdapter = new ApplicationAdapter(response.body(), organizations);
                     mRecyclerView.setAdapter(mAdapter);
                 } else {
                     Log.d("Error", response.message());
