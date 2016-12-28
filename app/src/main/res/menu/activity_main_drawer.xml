@@ -14,10 +14,6 @@
             android:id="@+id/nav_applications"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/navigation_drawer_item_applications" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/navigation_drawer_item_settings" />
     </group>
 
     <item android:title="@string/navigation_drawer_category_support">

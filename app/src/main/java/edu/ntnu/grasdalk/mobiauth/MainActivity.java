@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity
 
     final static int PERMISSIONS_CAMERA = 3;
 
-    private ImageView mNavbarImageView;
-
     private TextView mNavbarFullnameTextView;
     private TextView mNavbarEmailTextView;
 
@@ -71,7 +69,6 @@ public class MainActivity extends AppCompatActivity
                                 (TextView)findViewById(R.id.navbar_fullname_textview);
                         mNavbarEmailTextView =
                                 (TextView) findViewById(R.id.navbar_email_textview);
-                        mNavbarImageView = (ImageView) findViewById(R.id.navbar_image);
                         mNavbarFullnameTextView.setText(
                                 sharedPref.getString(getString(R.string.prefs_first_name), ""));
                         mNavbarEmailTextView.setText(
@@ -194,10 +191,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_container, applicationFragment)
                     .addToBackStack("")
                     .commit();
-
-        } else if (id == R.id.nav_settings) {
-            Toast.makeText(this, "Settings are not yet available", Toast.LENGTH_LONG).show();
-
+            
         } else if (id == R.id.nav_support) {
             Intent browserIntent =
                     new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.server_help_url)));

@@ -135,12 +135,7 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
                 System.out.println(creationCall.request().url());
                 try {
                     final Response authenticationResponse = creationCall.execute();
-                    Toast
-                            .makeText(
-                                    getActivity(),
-                                    authenticationResponse.message(),
-                                    Toast.LENGTH_SHORT)
-                            .show();
+                    shortToast(authenticationResponse.message());
                 } catch (IOException e) {
                     Log.e("", e.toString());
                 }
@@ -178,12 +173,7 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
                     sessionId = new String(params[1]);
                 }
                 if(!hasAccessToApplication(applicationId)) {
-                    Toast
-                            .makeText(
-                                    getActivity(),
-                                    "You do not have access to that application",
-                                    Toast.LENGTH_SHORT)
-                            .show();
+                    shortToast("You do not have access to that application");
                     currentState = AUTH_STATE.STARTED;
                 } else {
                     currentState = AUTH_STATE.SCANNED;
